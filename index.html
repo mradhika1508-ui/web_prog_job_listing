@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JobBoard India — Find Your Next Role</title>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wght@300;400;500;600;700;900&family=Geist+Mono:wght@300;400;500&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<!-- LIVE REGION for screen readers -->
+<div aria-live="polite" aria-atomic="true" class="sr-only" id="live-region"></div>
+
+<!-- NAV -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-logo">Job<span class="dot">.</span>Board</div>
+  <div class="nav-links">
+    <button class="nav-link active" id="nav-listings" onclick="navigate('listings')" aria-label="Browse all listings">Listings</button>
+    <button class="nav-link" id="nav-saved" onclick="navigate('saved')" aria-label="View saved jobs" style="position:relative">
+      Saved
+      <span class="nav-badge" id="saved-badge" style="display:none">0</span>
+    </button>
+  </div>
+  <button class="nav-filter-btn" id="filter-toggle-btn" onclick="toggleSidebar()" aria-label="Toggle filters" aria-expanded="false">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="10" y2="18"/></svg>
+    Filters
+    <span class="filter-count-badge" id="filter-count-badge">0</span>
+  </button>
+</nav>
+
+<!-- BODY -->
+<div class="app-body">
+
+  <!-- SIDEBAR OVERLAY (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar" role="complementary" aria-label="Filter jobs">
+    <div class="sidebar-header">
+      <span class="sidebar-title">Filters</span>
+      <button class="clear-all-btn" id="clear-all-btn" onclick="clearFilters()" aria-label="Clear all filters">Clear all</button>
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-label" for="loc-filter">Location</label>
+      <select class="filter-select" id="loc-filter" onchange="applyFilters()" aria-label="Filter by location">
+        <option value="">All Locations</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Job Type</span>
+      <div class="checkbox-list" id="type-filters">
+        <label class="checkbox-item">
+          <input type="checkbox" value="full-time" onchange="applyFilters()">
+          <span class="checkbox-box"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span class="checkbox-text">Full-time</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="part-time" onchange="applyFilters()">
+          <span class="checkbox-box"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span class="checkbox-text">Part-time</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="contract" onchange="applyFilters()">
+          <span class="checkbox-box"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span class="checkbox-text">Contract</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="internship" onchange="applyFilters()">
+          <span class="checkbox-box"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span class="checkbox-text">Internship</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label class="filter-label" for="cat-filter">Category</label>
+      <select class="filter-select" id="cat-filter" onchange="applyFilters()" aria-label="Filter by category">
+        <option value="">All Categories</option>
+        <option>Engineering</option>
+        <option>Design</option>
+        <option>Marketing</option>
+        <option>Sales</option>
+        <option>Operations</option>
+        <option>Product</option>
+        <option>Data</option>
+        <option>Finance</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Experience Level</span>
+      <div class="checkbox-list" id="level-filters">
+        <label class="checkbox-item">
+          <input type="checkbox" value="entry" onchange="applyFilters()">
+          <span class="checkbox-box"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span class="checkbox-text">Entry</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="mid" onchange="applyFilters()">
+          <span class="checkbox-box"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span class="checkbox-text">Mid-level</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="senior" onchange="applyFilters()">
+          <span class="checkbox-box"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span class="checkbox-text">Senior</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" value="lead" onchange="applyFilters()">
+          <span class="checkbox-box"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span class="checkbox-text">Lead</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label class="checkbox-item" style="padding:5px 8px;">
+        <input type="checkbox" id="remote-filter" onchange="applyFilters()">
+        <span class="checkbox-box"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span class="checkbox-text">Remote only</span>
+      </label>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="main-content" role="main">
+
+    <!-- LISTINGS VIEW -->
+    <div id="listings-view">
+      <!-- HERO -->
+      <section class="hero" aria-label="Search jobs">
+        <div class="hero-eyebrow">🇮🇳 Discover your next role in India</div>
+        <h1 class="hero-title">Find jobs you'll<br/><em>actually love.</em></h1>
+        <div class="search-wrap" role="search">
+          <span class="search-icon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input class="search-input" id="search-input" type="search" placeholder="Search jobs, companies, or skills…" aria-label="Search jobs" oninput="debouncedSearch()" autocomplete="off"/>
+          <button class="search-clear" id="search-clear" onclick="clearSearch()" aria-label="Clear search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- RESULTS BAR -->
+      <div class="results-bar">
+        <div class="results-count" id="results-count" aria-live="polite"><strong>—</strong> jobs found</div>
+        <select class="sort-select" id="sort-select" onchange="applyFilters()" aria-label="Sort results">
+          <option value="newest">Newest first</option>
+          <option value="salary-high">Salary: high to low</option>
+          <option value="salary-low">Salary: low to high</option>
+          <option value="alpha">A → Z</option>
+        </select>
+      </div>
+
+      <!-- ERROR BANNER -->
+      <div class="error-banner" id="error-banner" role="alert">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Failed to load job listings. Please try again.
+        <button class="retry-btn" onclick="loadJobs()">Retry</button>
+      </div>
+
+      <!-- JOBS GRID -->
+      <div class="jobs-area">
+        <div class="jobs-grid" id="jobs-grid" aria-label="Job listings"></div>
+      </div>
+    </div>
+
+    <!-- DETAIL VIEW -->
+    <div id="detail-view" class="detail-view" role="article" aria-label="Job detail"></div>
+
+    <!-- SAVED VIEW -->
+    <div id="saved-view" class="saved-view" aria-label="Saved jobs">
+      <div class="saved-header">
+        <h2 class="saved-title">Saved Jobs</h2>
+        <p class="saved-desc">Your bookmarked listings — pick up where you left off.</p>
+      </div>
+      <div class="jobs-grid" id="saved-grid"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- APPLICATION MODAL -->
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-job-title" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <!-- Success State -->
+    <div class="modal-success" id="modal-success">
+      <div class="modal-success-icon">🎉</div>
+      <div class="modal-success-title">Application Sent!</div>
+      <p class="modal-success-desc" id="modal-success-desc">Your application has been submitted successfully. Good luck!</p>
+      <button class="modal-success-cta" onclick="closeModal()">Browse More Jobs</button>
+    </div>
+    <!-- Error State -->
+    <div class="modal-error" id="modal-error">
+      <div class="modal-error-icon">⚠️</div>
+      <div class="modal-error-title">Submission Failed</div>
+      <p class="modal-error-desc">Something went wrong. Please try again.</p>
+      <button class="modal-retry-btn" onclick="showForm()">Try Again</button>
+    </div>
+    <!-- Form State -->
+    <div id="modal-form-wrap">
+      <div class="modal-header">
+        <div class="modal-title-block">
+          <div class="modal-eyebrow">Apply for this position</div>
+          <div class="modal-job-title" id="modal-job-title"></div>
+        </div>
+        <button class="modal-close" onclick="closeModal()" aria-label="Close application modal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-error-summary" id="form-error-summary" role="alert" aria-label="Form errors">
+          <ul id="error-list"></ul>
+        </div>
+        <form id="application-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="f-name">Full Name <span class="form-required">*</span></label>
+            <input class="form-input" id="f-name" type="text" placeholder="Priya Sharma" required autocomplete="name"/>
+            <div class="form-error" id="e-name">Please enter your full name.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-email">Email <span class="form-required">*</span></label>
+            <input class="form-input" id="f-email" type="email" placeholder="priya@example.com" required autocomplete="email"/>
+            <div class="form-error" id="e-email">Please enter a valid email address.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-phone">Phone <span style="color:var(--ink4);font-weight:400">(optional)</span></label>
+            <input class="form-input" id="f-phone" type="tel" placeholder="+91 98765 43210" autocomplete="tel"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-linkedin">LinkedIn URL <span style="color:var(--ink4);font-weight:400">(optional)</span></label>
+            <input class="form-input" id="f-linkedin" type="url" placeholder="https://linkedin.com/in/yourname"/>
+            <div class="form-error" id="e-linkedin">Please enter a valid URL.</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-cover">Cover Letter <span style="color:var(--ink4);font-weight:400">(optional)</span></label>
+            <textarea class="form-textarea" id="f-cover" placeholder="Tell us why you're a great fit for this role…" maxlength="1000" oninput="updateCharCount()"></textarea>
+            <div class="char-counter" id="char-counter">0 / 1000</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Resume <span style="color:var(--ink4);font-weight:400">(optional)</span></label>
+            <div class="file-upload-area" id="file-upload-area">
+              <input type="file" id="f-resume" accept=".pdf,.doc,.docx" onchange="handleFileChange()" aria-label="Upload resume"/>
+              <div class="file-upload-icon">📎</div>
+              <div class="file-upload-text">Drop your resume here or click to browse</div>
+              <div class="file-upload-sub">PDF or DOC — max 5 MB</div>
+              <div class="file-chosen" id="file-chosen"></div>
+            </div>
+            <div class="form-error" id="e-resume"></div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-submit" id="submit-btn" onclick="submitApplication()">
+          <span class="spinner" id="submit-spinner"></span>
+          <span id="submit-label">Submit Application</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
